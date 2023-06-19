@@ -2,6 +2,7 @@ package com.example.mvp_login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.example.mvp_login.Presenter.ILoginPresenter
 import com.example.mvp_login.Presenter.LoginPresenter
@@ -14,13 +15,19 @@ class MainActivity : AppCompatActivity(),ILoginUser {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show()
     }
 
+    override fun showProgress(isVisible: Boolean) {
+      binding.progress.visibility = if(isVisible) View.VISIBLE else View.GONE
+    }
+
 
     internal lateinit var loginPresenter: ILoginPresenter
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //Init
@@ -28,6 +35,7 @@ class MainActivity : AppCompatActivity(),ILoginUser {
 
         binding.buttonLogin.setOnClickListener {
             loginPresenter.onLogin(binding.edtEmail.text.toString(), binding.edtPassword.text.toString())
+
         }
     }
 
